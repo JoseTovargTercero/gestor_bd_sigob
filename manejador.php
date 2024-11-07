@@ -48,13 +48,16 @@ function listaActualizaciones()
 {
 	global $conexion;
 
+	$data = [];
+
 	$stmt = mysqli_prepare($conexion, "SELECT * FROM `upts`");
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if ($result->num_rows > 0) {
 		while ($row = $result->fetch_assoc()) {
-			return ['success' => $row];
+			array_push($data, $row)
 		}
+		return ['success' => $data];
 	}
 	$stmt->close();
 

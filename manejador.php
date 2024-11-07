@@ -65,6 +65,21 @@ function listaActualizaciones()
 }
 
 
+function nuevo_alter($user, $alter)
+{
+	global $conexion;
+
+	$stmt_o = $conexion->prepare("INSERT INTO upts (user, qry) VALUES (?, ?)");
+	$stmt_o->bind_param("ss", $user, $alter);
+
+	if ($stmt_o->execute()) {
+		$id_r = $conexion->insert_id;
+		$stmt_o->close();
+		return ['success' => $id_r];
+	} else {
+		return ['error' => 'Error en el registro'];
+	}
+}
 
 
 header('Content-Type: application/json');
@@ -83,7 +98,30 @@ switch ($accion) {
 		}
 		break;
 
+	case ('send_alter'):
+		$usr = validar($llave);
+		$consulta = $data["llave"];
+
+		if ($usr) {
+			// Validar si la consulta contiene palabras peligrosas
+			$consulta_lower = strtolower($consulta);  // Convertir la consulta a minúsculas para hacer la comparación
+			$palabras_prohibidas = ['drop', 'delete', 'truncate', 'update', 'select', 'insert', 'alter'];
+
+			// Buscar si alguna palabra prohibida está en la consulta
+			foreach ($palabras_prohibidas as $palabra) {
+				if (strpos($consulta_lower, $palabra) !== false) {
+					echo json_encode(['error' => 'Consulta no permitida']);
+					exit;
+				}
+			}
+			// Si pasa la validación, llamar la función correspondiente
+			echo json_encode(nuevo_alter($usr, $consulta));
+		} else {
+			echo json_encode(['error' => 'No tiene permisos de acceso']);
+		}
+		break;
 
 	default:
 		echo json_encode(['error' => 'Accion no especificada']);
+		break;
 }

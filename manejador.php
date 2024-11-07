@@ -17,7 +17,13 @@ if ($conexion->connect_error) {
 date_default_timezone_set('America/Manaus');
 
 // Conectar a la BD
+header("Access-Control-Allow-Origin: http://localhost");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+
+
+// FUNCIONES
 
 function validar($llave)
 {

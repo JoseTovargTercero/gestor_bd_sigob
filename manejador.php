@@ -61,7 +61,7 @@ function listaActualizaciones()
 	}
 	$stmt->close();
 
-	return ['error' => 'No hay registros para mostrar'];
+	return ['success' => 'No hay registros para mostrar'];
 }
 
 

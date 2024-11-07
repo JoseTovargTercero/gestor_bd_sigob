@@ -69,9 +69,22 @@ function nuevo_alter($user, $alter)
 {
 	global $conexion;
 
+	// verificar
+
+	$stmt = mysqli_prepare($conexion, "SELECT * FROM `upts` WHERE qry = ?");
+	$stmt->bind_param("s", $alter);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if ($result->num_rows > 0) {
+		return ['error' => 'Ya existe la consulta'];
+	}
+	$stmt->close();
+
+
+	/// Registrar
+
 	$stmt_o = $conexion->prepare("INSERT INTO upts (user, qry) VALUES (?, ?)");
 	$stmt_o->bind_param("ss", $user, $alter);
-
 	if ($stmt_o->execute()) {
 		$id_r = $conexion->insert_id;
 		$stmt_o->close();

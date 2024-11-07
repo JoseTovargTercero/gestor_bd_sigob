@@ -100,7 +100,7 @@ switch ($accion) {
 
 	case ('send_alter'):
 		$usr = validar($llave);
-		$consulta = $data["llave"];
+		$consulta = $data["consulta"];
 
 		if ($usr) {
 			// Validar si la consulta contiene palabras peligrosas
@@ -115,7 +115,7 @@ switch ($accion) {
 				}
 			}
 			// Si pasa la validación, llamar la función correspondiente
-			echo json_encode(nuevo_alter($usr, $consulta));
+			echo json_encode(nuevo_alter($usr, $consulta_lower));
 		} else {
 			echo json_encode(['error' => 'No tiene permisos de acceso']);
 		}

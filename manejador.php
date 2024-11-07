@@ -105,7 +105,7 @@ switch ($accion) {
 		if ($usr) {
 			// Validar si la consulta contiene palabras peligrosas
 			$consulta_lower = strtolower($consulta);  // Convertir la consulta a minúsculas para hacer la comparación
-			$palabras_prohibidas = ['drop', 'delete', 'truncate', 'update', 'select', 'insert', 'alter'];
+			$palabras_prohibidas = ['drop', 'delete', 'truncate', 'update', 'select'];
 
 			// Buscar si alguna palabra prohibida está en la consulta
 			foreach ($palabras_prohibidas as $palabra) {
